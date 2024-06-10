@@ -5,6 +5,9 @@ const Query = {
     Query: {
         ...userResolvers.Query,
         ...reviewResolvers.Query
+    },
+    Mutation: {
+        ...userResolvers.Mutation
     }
 }
 export default Query;
