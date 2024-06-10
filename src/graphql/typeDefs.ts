@@ -10,14 +10,27 @@ export const typeDefs = gql `
     type Query {
         getUsers: [User!]
         getReviews: [Review]
+        getReview(id: ID!): Review!
     }
     type Mutation {
         register(registerInput: RegisterInput): RegistratedUser!
         login(loginInput: LoginInput): RegistratedUser!
+        createReview(createReviewInput: CreateRevewInput): Review!
+        deleteReview(id: ID!): Boolean!
     }
     type Review {
         text: String!
-        users: [User]
+        authorName: String!
+        comments: [Comment]
+        book: String!
+    }
+    type Comment {
+        text: String!
+        authorName: String!
+    }
+    input CreateRevewInput {
+        text: String!
+        book: String!
     }
     input RegisterInput {
         name: String!

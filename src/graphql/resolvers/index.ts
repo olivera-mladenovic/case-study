@@ -7,7 +7,8 @@ const Query = {
         ...reviewResolvers.Query
     },
     Mutation: {
-        ...userResolvers.Mutation
+        ...userResolvers.Mutation,
+        ...reviewResolvers.Mutation
     }
 }
 export default Query;

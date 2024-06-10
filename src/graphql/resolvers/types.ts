@@ -9,3 +9,8 @@ export interface LoginInput {
     email: string;
     password: string;
 }
+
+export interface ReviewInput {
+    text: string;
+    book: string;
+}

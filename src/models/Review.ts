@@ -11,7 +11,9 @@ const reviewSchema = new Schema({
             text: String,
             authorName: String
         }
-    ]
+    ],
+    authorName: String,
+    book: String
 });
 
 const Review = model('Review', reviewSchema);
