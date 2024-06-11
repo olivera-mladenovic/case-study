@@ -1,5 +1,6 @@
 import userResolvers from './users.js';
 import reviewResolvers from './reviews.js';
+import commentResolvers from './comments.js';
 
 const Query = {
     Query: {
@@ -8,7 +9,8 @@ const Query = {
     },
     Mutation: {
         ...userResolvers.Mutation,
-        ...reviewResolvers.Mutation
+        ...reviewResolvers.Mutation,
+        ...commentResolvers.Mutation
     }
 }
 export default Query;

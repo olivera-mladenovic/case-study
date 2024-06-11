@@ -17,14 +17,18 @@ export const typeDefs = gql `
         login(loginInput: LoginInput): RegistratedUser!
         createReview(createReviewInput: CreateRevewInput): Review!
         deleteReview(id: ID!): Boolean!
+        createComment(reviewId: ID!, text: String!): Review!
+        deleteComment(reviewId: ID!, commentId: ID!): Review!
     }
     type Review {
+        id: ID!
         text: String!
         authorName: String!
-        comments: [Comment]
+        comments: [Comment]!
         book: String!
     }
     type Comment {
+        id: ID!
         text: String!
         authorName: String!
     }
