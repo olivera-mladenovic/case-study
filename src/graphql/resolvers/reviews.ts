@@ -1,7 +1,7 @@
 import { ReviewInput } from './types';
 import Review from '../../models/Review.js';
 import auth from '../authentication.js';
-import { AuthenticationError } from 'apollo-server';
+import { AuthenticationError, UserInputError } from 'apollo-server';
 
 const Query = {
     Query: {
@@ -39,7 +39,7 @@ const Query = {
             const { id } = args;
             const user = auth(context) as any;
             const review = await Review.findById(id).populate('user').exec();
-                if (review.user.id !== user.id) throw new AuthenticationError("Not authorized to delete.");
+            if (review.user.id !== user.id) throw new AuthenticationError("Not authorized to delete.");
             try {
                 await Review.findByIdAndDelete(id);
                 return true;
@@ -47,6 +47,25 @@ const Query = {
                 console.log(e);
                 return false;
             }
+        },
+        async markHelpful(_, { id }, context) {
+            const user = auth(context) as any;
+            const review = await Review.findById(id);
+            if (!review) throw new UserInputError("Bad request. Review doesn't exist.");
+            const markExists = review.helpfulMarks.find(mark => mark.authorId === user.id);
+            
+            if (markExists) {
+                const markIndex = review.helpfulMarks.findIndex(c => c.authorId === user.id);
+                review.helpfulMarks.splice(markIndex, 1);
+                
+            } else {
+                review.helpfulMarks.push({
+                    authorId: user.id,
+                    authorName: user.name
+                })
+            }
+            await review.save();
+            return review;
         }
     }
 }

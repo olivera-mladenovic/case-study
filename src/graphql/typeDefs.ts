@@ -19,6 +19,7 @@ export const typeDefs = gql `
         deleteReview(id: ID!): Boolean!
         createComment(reviewId: ID!, text: String!): Review!
         deleteComment(reviewId: ID!, commentId: ID!): Review!
+        markHelpful(id: ID!): Review!
     }
     type Review {
         id: ID!
@@ -26,6 +27,11 @@ export const typeDefs = gql `
         authorName: String!
         comments: [Comment]!
         book: String!
+        helpfulMarks: [HelpfulMark]!
+    }
+    type HelpfulMark {
+        id: ID!
+        authorName: String!
     }
     type Comment {
         id: ID!

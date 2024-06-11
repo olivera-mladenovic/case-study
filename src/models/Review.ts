@@ -13,7 +13,11 @@ const reviewSchema = new Schema({
         }
     ],
     authorName: String,
-    book: String
+    book: String,
+    helpfulMarks: [{
+        authorName: String,
+        authorId: String
+    }]
 });
 
 const Review = model('Review', reviewSchema);
