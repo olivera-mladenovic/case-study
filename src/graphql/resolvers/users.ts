@@ -8,7 +8,7 @@ import { validateRegisterInput } from './validators.js';
 
 const Query = {
     Query: {
-        async getUsers() {
+        getUsers: async () => {
             try {
                 const users = await User.find();
                 return users;
@@ -18,7 +18,7 @@ const Query = {
         },
     },
     Mutation: {
-        async register(_, args: { registerInput: RegisterInput }, context, info) {
+        register: async (_, args: { registerInput: RegisterInput }) =>{
             const { email, name, password } = args.registerInput;
             validateRegisterInput(args.registerInput)
             const existingUser = await User.findOne({ email });
@@ -47,7 +47,7 @@ const Query = {
             }
         },
 
-        async login(_, args: { loginInput: LoginInput }, context, info) {
+        login: async (_, args: { loginInput: LoginInput }) => {
             const {email, password} = args.loginInput;
             const user = await User.findOne({ email });
             if (!user) {

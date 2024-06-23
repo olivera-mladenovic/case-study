@@ -4,8 +4,9 @@ import auth from '../authentication.js';
 import { AuthenticationError, UserInputError } from 'apollo-server';
 
 const Query = {
+    
     Query: {
-        async getReviews() {
+        getReviews: async () => {
             try {
                 const reviews = await Review.find();
                 return reviews;
@@ -13,7 +14,7 @@ const Query = {
                 console.log(e);
             }
         },
-        async getReview(_, { id }) {
+        getReview: async (_, { id }) => {
             try {
                 const review = await Review.findById(id);
                 return review;
@@ -23,7 +24,7 @@ const Query = {
         }
     },
     Mutation: {
-        async createReview(_, args: { createReviewInput: ReviewInput }, context) {
+        createReview: async (_, args: { createReviewInput: ReviewInput }, context) => {
             const { book, text } = args.createReviewInput;
             const user = auth(context) as any;
             const newReview = new Review({
@@ -35,7 +36,7 @@ const Query = {
             const review = await newReview.save();
             return review;
         },
-        async deleteReview(_, args: { id: string }, context) {
+        deleteReview: async (_, args: { id: string }, context) => {
             const { id } = args;
             const user = auth(context) as any;
             const review = await Review.findById(id).populate('user').exec();
@@ -48,16 +49,16 @@ const Query = {
                 return false;
             }
         },
-        async markHelpful(_, { id }, context) {
+        markHelpful: async (_, { id }, context) => {
             const user = auth(context) as any;
             const review = await Review.findById(id);
             if (!review) throw new UserInputError("Bad request. Review doesn't exist.");
             const markExists = review.helpfulMarks.find(mark => mark.authorId === user.id);
-            
+
             if (markExists) {
                 const markIndex = review.helpfulMarks.findIndex(c => c.authorId === user.id);
                 review.helpfulMarks.splice(markIndex, 1);
-                
+
             } else {
                 review.helpfulMarks.push({
                     authorId: user.id,
