@@ -7,5 +7,6 @@ mongoose.connect("mongodb+srv://olivera:mongodb10@cluster0.shlschd.mongodb.net/c
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({req}) => ({req})
+    context: ({req}) => ({req}),
+    introspection: true
 });
