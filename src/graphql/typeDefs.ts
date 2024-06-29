@@ -24,10 +24,12 @@ export const typeDefs = gql `
     type Review {
         id: ID!
         text: String!
-        authorName: String!
+        author: String!
         comments: [Comment]!
         book: String!
         helpfulMarks: [HelpfulMark]!
+        user: User!
+        createdAt: Float!
     }
     type HelpfulMark {
         id: ID!
@@ -37,6 +39,7 @@ export const typeDefs = gql `
         id: ID!
         text: String!
         authorName: String!
+        createdAt: Float!
     }
     input CreateRevewInput {
         text: String!

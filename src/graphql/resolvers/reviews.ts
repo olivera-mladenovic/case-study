@@ -8,7 +8,7 @@ const Query = {
     Query: {
         getReviews: async () => {
             try {
-                const reviews = await Review.find();
+                const reviews = await Review.find().populate('user').exec();
                 return reviews;
             } catch (e) {
                 console.log(e);
@@ -20,6 +20,7 @@ const Query = {
                 return review;
             } catch (e) {
                 console.log(e);
+                
             }
         }
     },
@@ -31,7 +32,8 @@ const Query = {
                 book,
                 text,
                 user: user.id,
-                authorName: user.name
+                authorName: user.name,
+                createdAt: Date.now()
             })
             const review = await newReview.save();
             return review;

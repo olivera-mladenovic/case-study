@@ -10,7 +10,9 @@ const Query = {
             if (!review) throw new UserInputError("Bad request. Review not found.");
             review.comments.unshift({
                 text,
-                authorName: user.name
+                authorName: user.name,
+                authorId: user.id,
+                createdAt: Date.now()
             });
             await review.save();
             return review;

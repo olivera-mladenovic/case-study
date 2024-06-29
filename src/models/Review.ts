@@ -2,6 +2,7 @@ import { model, Schema } from 'mongoose';
 
 const reviewSchema = new Schema({
     text: String,
+    createdAt: Number,
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -9,11 +10,13 @@ const reviewSchema = new Schema({
     comments: [
         {
             text: String,
-            authorName: String
+            authorName: String,
+            authorId: String,
+            createdAt: Number
         }
     ],
-    authorName: String,
     book: String,
+    author: String,
     helpfulMarks: [{
         authorName: String,
         authorId: String
