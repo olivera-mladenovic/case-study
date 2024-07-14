@@ -3,6 +3,7 @@ import { LoginInput } from "../../models";
 import { Button, Form } from "semantic-ui-react";
 import { gql, useMutation } from "@apollo/client";
 import './styles/RegisterScreen.css'
+import { useNavigate } from "react-router-dom";
 
 export const LoginScreen: React.FC = () => {
     const [values, setValues] = useState<LoginInput>({
@@ -10,6 +11,7 @@ export const LoginScreen: React.FC = () => {
         password: '',
        
     });
+    const navigate = useNavigate();
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
         setValues({ ...values, [event.target.name]: event.target.value })
     }
@@ -23,6 +25,7 @@ export const LoginScreen: React.FC = () => {
         event.preventDefault();
         console.log(values);
         login();
+        navigate('/panel');
     }
     return (
         <div className="form">
