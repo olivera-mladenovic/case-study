@@ -1,13 +1,18 @@
 import React from 'react';
 import { Button, Grid } from 'semantic-ui-react';
-//import {EventList} from '../list';
-//import { EventDetails } from '../details';
 import { useNavigate } from 'react-router-dom';
 import ReviewList from './ReviewList';
+import { useUser } from '../../contexts';
 
 
 export const ReviewPanel: React.FC = () => {
     const navigate = useNavigate();
+    const { user } = useUser();
+
+    if (!user) {
+        console.log('user kog vidim u panelu', user)
+        return <h1>Unauthorized</h1>
+    }
 
     return (
         <Grid>
@@ -21,7 +26,7 @@ export const ReviewPanel: React.FC = () => {
             </Grid.Column>
             <Grid.Column width="6">
                 <div>
-                {/* <EventDetails/> */}
+                {/* Here will go the selectedReview Detail */}
                 </div>
             </Grid.Column>
         </Grid>

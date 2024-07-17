@@ -26,6 +26,7 @@ const Query = {
     },
     Mutation: {
         createReview: async (_, args: { createReviewInput: ReviewInput }, context) => {
+            console.log('usao')
             const { book, text } = args.createReviewInput;
             const user = auth(context) as any;
             const newReview = new Review({

@@ -1,9 +1,10 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { RegisterInput } from "../../models";
+import { RegisterInput,  RegisterUserResponse } from "../../models";
 import { Button, Form } from "semantic-ui-react";
 import { gql, useMutation } from "@apollo/client";
 import './styles/RegisterScreen.css'
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../contexts";
 
 export const RegisterScreen: React.FC = () => {
     const [values, setValues] = useState<RegisterInput>({
@@ -13,12 +14,14 @@ export const RegisterScreen: React.FC = () => {
         confirmPassword: ''
     });
     const navigate = useNavigate();
+    const contextData = useUser();
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
         setValues({ ...values, [event.target.name]: event.target.value })
     }
-    const [register, {loading}] = useMutation(REGISTER, {
+    const [register, {loading}] = useMutation<RegisterUserResponse>(REGISTER, {
         update(_, result) {
-            console.log(result);
+            if (!result.data) throw new Error('Register error');
+            contextData?.loginUser(result.data.register);
         },
         variables: values
     })
