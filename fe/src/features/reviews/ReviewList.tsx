@@ -1,8 +1,11 @@
 
 import React from "react";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
 import { Review } from "../../models";
+import { GET_REVIEWS } from "../../graphql";
+
+
 
 export default function ReviewList() {
     
@@ -39,14 +42,3 @@ export default function ReviewList() {
         </Segment>
     )
 }
-
-const GET_REVIEWS = gql`
-{
-    getReviews {
-        createdAt
-        text
-        book
-        author
-    }
-   }
-`;

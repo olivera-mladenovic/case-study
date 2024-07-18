@@ -13,4 +13,5 @@ export interface LoginInput {
 export interface ReviewInput {
     text: string;
     book: string;
+    author: string;
 }

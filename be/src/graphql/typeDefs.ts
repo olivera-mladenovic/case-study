@@ -44,6 +44,7 @@ export const typeDefs = gql `
     input CreateRevewInput {
         text: String!
         book: String!
+        author: String!
     }
     input RegisterInput {
         name: String!

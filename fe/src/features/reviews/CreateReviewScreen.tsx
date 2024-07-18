@@ -1,57 +1,48 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { CreateReviewInput } from "../../models";
-import { Button, Form } from "semantic-ui-react";
-import { gql, useMutation } from "@apollo/client";
-import { useNavigate } from "react-router-dom";
-import { useUser } from "../../contexts";
+import { CreatedReviewResponse, CreateReviewInput } from "../../models";
+import { Form } from "semantic-ui-react";
+import './styles/createReview.css'
+import { useMutation } from "@apollo/client";
+import { CREATE_REVIEW, GET_REVIEWS } from "../../graphql";
 
-export const CreateReviewScreen: React.FC = () => {
+export const CreateReview: React.FC = () => {
     const [values, setValues] = useState<CreateReviewInput>({
         text: '', 
         book: '',
+        author: ''
     });
-    const navigate = useNavigate();
-    const { user} = useUser();
-
-    // if (!user) {
-    //     return <h1>Unauthorized</h1>
-    // }
-    const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+   
+    const onChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
         setValues({ ...values, [event.target.name]: event.target.value })
     }
-    const [createReview, {loading}] = useMutation(CREATE_REVIEW, {
+    const [createReview, {loading}] = useMutation<CreatedReviewResponse>(CREATE_REVIEW, {
         onError(err) {
             console.log(err)
         },
-        update(_, result) {
-            console.log(result);   
+        update(proxy, result) {
+            proxy.updateQuery({
+                query: GET_REVIEWS
+            }, (data) => {
+                return {
+                    getReviews: [result.data?.createReview, ...(data.getReviews)]
+                }
+            });  
         },
         variables: values,
     })
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         createReview();
-        navigate('/panel');
     }
     return (
         <div className="form">
             <Form onSubmit={onSubmit} className={loading ? 'loading' : ''}>
-                <h1>Create review</h1>
-                <Form.Input label="Text" placeholder="Text" name="text" value={values.text} onChange={onChange} type="text" />
-                <Form.Input label="Book" placeholder="Book" name="book" value={values.book} onChange={onChange} type="password" />
-                <Button type="submit" primary>Create</Button>
+                <Form.TextArea label="Text" placeholder="Text" name="text" value={values.text} onChange={onChange} type="text" />
+                <Form.Input label="Book" placeholder="Book" name="book" value={values.book} onChange={onChange} type="text" />
+                <Form.Input label="Author" placeholder="Author" name="author" value={values.author} onChange={onChange} type="text" />
+                <Form.Button type="submit" primary floated="right" content="Create"/>
             </Form>
         </div>
     )
 }
 
-const CREATE_REVIEW = gql`
-mutation createReview(
-    $text: String!  
-    $book: String!
-) {
-    createReview(createReviewInput: {text: $text, book: $book}) {
-        id text book
-    }
-}
-`
