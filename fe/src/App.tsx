@@ -7,16 +7,18 @@ import { UserProvider } from './contexts';
 
 function App() {
   return (
-    <UserProvider>
-      <Router>
-     <Routes>
-      <Route  path='/' Component={HomeScreen} />
-      <Route path='/register' Component={RegisterScreen}/>
-      <Route path='/login' Component={LoginScreen}/>
-      <Route path='/panel' Component={ReviewPanel}/>
-     </Routes>
-    </Router>
-    </UserProvider>
+    <div>
+      <UserProvider>
+        <Router>
+          <Routes>
+            <Route  path='/' Component={HomeScreen} />
+            <Route path='/register' Component={RegisterScreen}/>
+            <Route path='/login' Component={LoginScreen}/>
+            <Route path='/panel' Component={ReviewPanel}/>
+          </Routes>
+        </Router>
+      </UserProvider>
+    </div>
   )
 }
 

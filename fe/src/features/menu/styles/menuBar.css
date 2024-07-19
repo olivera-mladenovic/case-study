@@ -1,0 +1,12 @@
+.ui.inverted.top.fixed.menu {
+    background: rgb(208,165,72);
+    background: linear-gradient(90deg, rgba(208,165,72,0.711922268907563) 0%, rgba(98,6,29,0.9836309523809523) 18%, rgba(28,1,1,1) 100%);
+}
+
+.ui.positive.button {
+    background-color: #47201f !important;
+}
+
+.ui.positive.button:hover {
+    background-color: #633533 !important;
+}

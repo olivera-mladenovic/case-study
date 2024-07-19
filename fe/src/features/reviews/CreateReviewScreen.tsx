@@ -26,7 +26,12 @@ export const CreateReview: React.FC = () => {
                 return {
                     getReviews: [result.data?.createReview, ...(data.getReviews)]
                 }
-            });  
+            });
+            setValues({
+                text: '', 
+                book: '',
+                author: ''
+            })  
         },
         variables: values,
     })
@@ -34,13 +39,15 @@ export const CreateReview: React.FC = () => {
         event.preventDefault();
         createReview();
     }
+    const isButtonEnabled = (): boolean => Boolean(values.text && values.book && values.author);
+
     return (
         <div className="form">
             <Form onSubmit={onSubmit} className={loading ? 'loading' : ''}>
-                <Form.TextArea label="Text" placeholder="Text" name="text" value={values.text} onChange={onChange} type="text" />
-                <Form.Input label="Book" placeholder="Book" name="book" value={values.book} onChange={onChange} type="text" />
-                <Form.Input label="Author" placeholder="Author" name="author" value={values.author} onChange={onChange} type="text" />
-                <Form.Button type="submit" primary floated="right" content="Create"/>
+                <Form.TextArea label="Text" placeholder="Text" name="text" value={values.text} onChange={onChange} type="text" required/>
+                <Form.Input label="Book" placeholder="Book" name="book" value={values.book} onChange={onChange} type="text" required/>
+                <Form.Input label="Author" placeholder="Author" name="author" value={values.author} onChange={onChange} type="text" required/>
+                <Form.Button type="submit" floated="right" content="Create" color="orange" disabled={!isButtonEnabled()}/>
             </Form>
         </div>
     )
