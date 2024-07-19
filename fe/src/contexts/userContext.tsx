@@ -13,6 +13,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
 
     const logoutUser = () => {
         setUser(null);
+        window.localStorage.removeItem('token');
     };
 
     return (

@@ -1,8 +1,18 @@
 import React from 'react';
 import { Button, Menu } from 'semantic-ui-react';
 import './styles/menuBar.css'
+import { useUser } from '../../contexts';
+import { useNavigate } from 'react-router-dom';
 
 export const MenuBar =() => {
+
+    const contextData = useUser();
+    const navigate = useNavigate();
+
+    const onLogout = () => {
+        contextData?.logoutUser();
+        navigate('/')
+    }
     
     return (
         <Menu inverted fixed='top'>
@@ -11,7 +21,7 @@ export const MenuBar =() => {
             </Menu.Item>
             <Menu.Item name='Book Reviews'/>               
                 <Menu.Menu position='right'>
-                    <Button positive content='Logout' onClick={()=> {console.log('log out probably')}}/>
+                    <Button positive content='Logout' onClick={onLogout}/>
                 </Menu.Menu> 
         </Menu>
     )
