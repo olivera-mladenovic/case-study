@@ -2,8 +2,9 @@ import React from 'react';
 import { Button, Grid } from 'semantic-ui-react';
 import ReviewList from './ReviewList';
 import './styles/reviewPanel.css';
-import { CreateReview } from './CreateReviewScreen';
+import { CreateReview } from './ReviewCreate';
 import { MenuBar } from '../menu';
+import { ReviewDetails } from './ReviewDetails';
 
 
 export const ReviewPanel: React.FC = () => {
@@ -26,7 +27,7 @@ export const ReviewPanel: React.FC = () => {
             <MenuBar></MenuBar>
             <div className='list'>
                 <Grid>
-                    <Grid.Column width='10'>
+                    <Grid.Column width='8'>
             
                     <div style={{width: "100%", height: 50}}>
                         <Button fluid content={buttonText} onClick={onClick} color='brown'/>
@@ -35,9 +36,9 @@ export const ReviewPanel: React.FC = () => {
             <ReviewList/>
             
             </Grid.Column>
-            <Grid.Column width="6">
+            <Grid.Column width="8">
                 <div>
-                {/* Here will go the selectedReview Detail */}
+                <ReviewDetails/>
                 </div>
             </Grid.Column>
                 </Grid>

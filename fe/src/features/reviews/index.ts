@@ -1,2 +1,3 @@
 export * from './ReviewPanel';
-export * from './CreateReviewScreen';
+export * from './ReviewCreate';
+export * from './ReviewDetails';

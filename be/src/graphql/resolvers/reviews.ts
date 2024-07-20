@@ -36,6 +36,7 @@ const Query = {
     Mutation: {
         createReview: async (_, args: { createReviewInput: ReviewInput }, context) => {
             const { book, text, author } = args.createReviewInput;
+            console.log(args.createReviewInput);
             const user = auth(context) as any;
             const newReview = new Review({
                 book,
@@ -49,6 +50,7 @@ const Query = {
         },
         deleteReview: async (_, args: { id: string }, context) => {
             const { id } = args;
+            console.log(args);
             const user = auth(context) as any;
             const review = await Review.findById(id).populate('user').exec();
             if (review.user.id !== user.id) throw new AuthenticationError("Not authorized to delete.");

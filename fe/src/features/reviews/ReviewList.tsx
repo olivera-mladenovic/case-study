@@ -4,12 +4,15 @@ import { useQuery } from "@apollo/client";
 import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
 import { Review } from "../../models";
 import { GET_REVIEWS } from "../../graphql";
+import { useSelectedReview } from "../../contexts";
 
 
 
 export default function ReviewList() {
     
-    const { loading, data } = useQuery(GET_REVIEWS);
+const { loading, data } = useQuery(GET_REVIEWS);
+const selectedReviewContext = useSelectedReview();
+
    if (loading) return <Segment className={loading ? 'loading' : ''}></Segment>
     return (
         <Segment className={loading ? 'loading' : ''}>
@@ -23,7 +26,7 @@ export default function ReviewList() {
                                     <div>{r.text}</div>
                             </Item.Description>
                             <Item.Extra style={{marginTop: '17px'}}>
-                                <Button floated="right" content='View' color="brown" circular onClick={()=>console.log('view review')}/>
+                                <Button floated="right" content='View' color="brown" circular onClick={()=> selectedReviewContext!.selectReview(r)}/>
                                 {/* <Button labelPosition="left" onClick={()=>console.log('mark helpful')}> */}
                                     <Icon name="thumbs up outline" size="big" color="brown"/>
                                 {/* </Button> */}

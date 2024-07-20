@@ -7,7 +7,7 @@ mutation createReview(
     $author: String!
 ) {
     createReview(createReviewInput: {text: $text, book: $book, author: $author}) {
-        text book author createdAt
+        id text book author createdAt
     }
 }
 `
@@ -15,6 +15,7 @@ mutation createReview(
 export const GET_REVIEWS = gql`
 {
     getReviews {
+        id
         createdAt
         text
         book
@@ -24,3 +25,11 @@ export const GET_REVIEWS = gql`
     }
 }
 `;
+
+export const DELETE_REVIEW = gql`
+mutation deleteReview(
+    $id: ID!  
+) {
+    deleteReview(id: $id)
+}
+`

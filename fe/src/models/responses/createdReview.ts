@@ -3,6 +3,8 @@ export interface CreatedReview {
     text: string;
     book: string;
     author: string;
+    commentsCount: number;
+    helpfulMarksCount: number;
 }
 
 export interface CreatedReviewResponse {
