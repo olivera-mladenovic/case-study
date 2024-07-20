@@ -15,24 +15,24 @@ export default function ReviewList() {
         <Segment className={loading ? 'loading' : ''}>
             <Item.Group divided>
                 {data.getReviews.map((r: Review) => (
-                    <Item key={r.id}>
+                    <Item key={r.id} style={{padding: '12px'}}>
                         <Item.Content>
                             <Item.Header>{`${r.author}, ${r.book}`}</Item.Header>
                             <Item.Meta>Date: {new Date(r.createdAt).toDateString()}</Item.Meta>
                             <Item.Description>
                                     <div>{r.text}</div>
                             </Item.Description>
-                            <Item.Extra>
+                            <Item.Extra style={{marginTop: '17px'}}>
                                 <Button floated="right" content='View' color="brown" circular onClick={()=>console.log('view review')}/>
-                                <Button labelPosition="left" onClick={()=>console.log('mark helpful')}>
+                                {/* <Button labelPosition="left" onClick={()=>console.log('mark helpful')}> */}
                                     <Icon name="thumbs up outline" size="big" color="brown"/>
-                                    <Label content="x" ></Label>
-                                </Button>
-                                <span></span>
-                                <Button labelPosition="left" onClick={()=>console.log('comment here  ')}>
-                                    <Icon name="comment" size="big" color="brown"/>
-                                    <Label content="x"></Label>
-                                </Button>
+                                {/* </Button> */}
+                                    <Label content={r.helpfulMarksCount}></Label>
+                                <span style={{margin: '0 10px'}}></span>
+                                {/* <Button labelPosition="left" onClick={()=>console.log('comment here  ')}> */}
+                                    <Icon name="comment outline" size="big" color="brown"/>
+                                {/* </Button> */}
+                                    <Label content={r.commentsCount} ></Label>
                             </Item.Extra>
 
                         </Item.Content>

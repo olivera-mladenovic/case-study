@@ -19,6 +19,8 @@ export const GET_REVIEWS = gql`
         text
         book
         author
+        commentsCount
+        helpfulMarksCount
     }
 }
 `;

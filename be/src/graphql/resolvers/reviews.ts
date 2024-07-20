@@ -8,16 +8,25 @@ const Query = {
     Query: {
         getReviews: async () => {
             try {
-                const reviews = await Review.find().populate('user').exec();
-                return reviews;
+                const reviews = await Review.find().populate('user').lean().exec();
+                const fullReviews = reviews.map((r: any) => {
+                    r.commentsCount = r.comments.length;
+                    r.helpfulMarksCount = r.helpfulMarks.length;
+                    r.id = r._id;
+                    return r;
+                })
+                return fullReviews;
             } catch (e) {
                 console.log(e);
             }
         },
         getReview: async (_, { id }) => {
             try {
-                const review = await Review.findById(id);
-                return review;
+                const r:any = await Review.findById(id).populate('user').lean().exec();
+                r.commentsCount = r.comments.length;
+                r.helpfulMarksCount = r.helpfulMarks.length;
+                r.id = r._id;
+                return r;
             } catch (e) {
                 console.log(e);
                 

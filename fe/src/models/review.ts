@@ -4,4 +4,6 @@ export interface Review {
     text: string;
     book: string;
     author: string;
+    commentsCount: number;
+    helpfulMarksCount: number;
 }

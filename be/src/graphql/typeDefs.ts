@@ -30,6 +30,8 @@ export const typeDefs = gql `
         helpfulMarks: [HelpfulMark]!
         user: User!
         createdAt: Float!
+        commentsCount: Int!
+        helpfulMarksCount: Int!
     }
     type HelpfulMark {
         id: ID!
