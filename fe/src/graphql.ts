@@ -68,6 +68,9 @@ query getReview($id: ID!){
             authorName
             text
         }
+        helpfulMarks {
+            authorId
+        }
     }
 }
 `;

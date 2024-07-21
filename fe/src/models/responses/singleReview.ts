@@ -6,7 +6,10 @@ export interface SingleReview {
     user: {
         id: string;
         name: string;
-    }
+    };
+    helpfulMarks: {
+        authorId: string;
+    }[]
 }
 
 export interface SingleReviewResponse {

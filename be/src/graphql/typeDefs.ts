@@ -34,7 +34,7 @@ export const typeDefs = gql `
         helpfulMarksCount: Int!
     }
     type HelpfulMark {
-        id: ID!
+        authorId: ID!
         authorName: String!
     }
     type Comment {

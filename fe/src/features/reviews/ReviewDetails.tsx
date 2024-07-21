@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 
 export const ReviewDetails: React.FC = () => {
     const selectedReviewContext = useSelectedReview();
-
     const { data: additionalInfo, error: additionalError } = useQuery<SingleReviewResponse>(GET_SINGLE_REVIEW, {
         variables: { id: selectedReviewContext?.selectedReview?.id },
         skip: !selectedReviewContext?.selectedReview?.id
@@ -42,8 +41,6 @@ export const ReviewDetails: React.FC = () => {
                     ...selectedReview,
                     helpfulMarksCount: result.data.markHelpful.helpfulMarksCount
                 }
-                console.log(result.data.markHelpful.helpfulMarksCount);
-                console.log(result.data)
                 selectedReviewContext?.selectReview(selectedReviewUpdated);
             }
         },
@@ -61,11 +58,12 @@ export const ReviewDetails: React.FC = () => {
         selectedReviewContext.cancelSelectedReview();
         if (error) console.log(error.message);   
     }
+
     const onLike = () => {
         markHelpfulReview({variables: {id: selectedReview?.id}});
         if (error) console.log(error.message);
     }
-
+    
     return (
         selectedReview && <div className='reviewContainer'>
             <Segment>
