@@ -71,3 +71,11 @@ query getReview($id: ID!){
     }
 }
 `;
+
+export const MARK_HELPFUL = gql`
+mutation markHelpful($id:ID!) {
+    markHelpful(id: $id) {
+        helpfulMarksCount
+    }
+}
+`;

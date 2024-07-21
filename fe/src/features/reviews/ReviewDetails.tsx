@@ -1,10 +1,10 @@
 import React from 'react';
-import { Button, Item, Segment } from 'semantic-ui-react';
+import { Button, Icon, Item, Label, Segment } from 'semantic-ui-react';
 import { useSelectedReview } from '../../contexts';
 import './styles/reviewDetails.css'
 import { useMutation, useQuery } from '@apollo/client';
-import { DELETE_REVIEW, GET_REVIEWS, GET_SINGLE_REVIEW } from '../../graphql';
-import { Review, SingleReviewResponse } from '../../models';
+import { DELETE_REVIEW, GET_REVIEWS, GET_SINGLE_REVIEW, MARK_HELPFUL } from '../../graphql';
+import { markHelpfulResponse, Review, SingleReviewResponse } from '../../models';
 import { Link } from 'react-router-dom';
 
 export const ReviewDetails: React.FC = () => {
@@ -16,7 +16,6 @@ export const ReviewDetails: React.FC = () => {
     });
 
     if (additionalError) console.log(additionalError.message);
-    if (additionalInfo) console.log(additionalInfo);
 
     const [deleteReview, {loading, error}] = useMutation<boolean>(DELETE_REVIEW, {
         onError(e) {
@@ -33,6 +32,25 @@ export const ReviewDetails: React.FC = () => {
         }
     })
 
+    const [markHelpfulReview, {error: markHelpfulReviewError}] = useMutation<markHelpfulResponse>(MARK_HELPFUL, {
+        onError(e) {
+            console.log(e.message);
+        },
+        update(proxy, result) {
+            if (selectedReview && result.data) {
+                const selectedReviewUpdated = {
+                    ...selectedReview,
+                    helpfulMarksCount: result.data.markHelpful.helpfulMarksCount
+                }
+                console.log(result.data.markHelpful.helpfulMarksCount);
+                console.log(result.data)
+                selectedReviewContext?.selectReview(selectedReviewUpdated);
+            }
+        },
+        variables: { id: selectedReviewContext?.selectedReview?.id },
+    })
+    if (markHelpfulReviewError) console.log(markHelpfulReviewError.message);
+
     if (!selectedReviewContext) return <></>
 
     const selectedReview = selectedReviewContext.selectedReview;
@@ -42,6 +60,10 @@ export const ReviewDetails: React.FC = () => {
         deleteReview({variables: {id: selectedReview?.id}})
         selectedReviewContext.cancelSelectedReview();
         if (error) console.log(error.message);   
+    }
+    const onLike = () => {
+        markHelpfulReview({variables: {id: selectedReview?.id}});
+        if (error) console.log(error.message);
     }
 
     return (
@@ -62,8 +84,20 @@ export const ReviewDetails: React.FC = () => {
                 </Item.Content>
         
         <div className='buttonsDetails'>
-        <Button positive content='Cancel' onClick={onCancel} />
-        <Button content='Delete' onClick={onDelete} loading={loading}/>
+            <Button labelPosition="left" onClick={onLike}>
+                <Icon name="thumbs up outline" color="brown"/>
+            </Button>
+            <Label content={selectedReview.helpfulMarksCount} size='small'></Label>
+            <span style={{margin: '0 10px'}}></span>
+            <Button labelPosition="left" onClick={()=>console.log('comment here  ')}>
+                <Icon name="comment outline" color="brown"/>
+            </Button>
+                <Label content={selectedReview.commentsCount} size='small'></Label>
+            <span style={{margin: '0 10%'}}></span>
+
+
+            <Button positive content='Cancel' onClick={onCancel} />
+            <Button content='Delete' onClick={onDelete} loading={loading}/>
         </div>
         
         </Item>

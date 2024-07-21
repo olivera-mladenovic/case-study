@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useQuery } from "@apollo/client";
-import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
+import { Button, Item, Segment } from "semantic-ui-react";
 import { Review } from "../../models";
 import { GET_REVIEWS } from "../../graphql";
 import { useSelectedReview } from "../../contexts";
@@ -27,15 +27,7 @@ const selectedReviewContext = useSelectedReview();
                             </Item.Description>
                             <Item.Extra style={{marginTop: '17px'}}>
                                 <Button floated="right" content='View' color="brown" circular onClick={()=> selectedReviewContext!.selectReview(r)}/>
-                                {/* <Button labelPosition="left" onClick={()=>console.log('mark helpful')}> */}
-                                    <Icon name="thumbs up outline" size="big" color="brown"/>
-                                {/* </Button> */}
-                                    <Label content={r.helpfulMarksCount}></Label>
-                                <span style={{margin: '0 10px'}}></span>
-                                {/* <Button labelPosition="left" onClick={()=>console.log('comment here  ')}> */}
-                                    <Icon name="comment outline" size="big" color="brown"/>
-                                {/* </Button> */}
-                                    <Label content={r.commentsCount} ></Label>
+                               
                             </Item.Extra>
 
                         </Item.Content>

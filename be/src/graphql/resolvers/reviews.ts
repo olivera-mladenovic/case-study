@@ -80,7 +80,11 @@ const Query = {
                 })
             }
             await review.save();
-            return review;
+            const updatedObject = {
+                ...review.toObject(),
+                helpfulMarksCount: review.helpfulMarks.length
+            }
+            return updatedObject;
         }
     }
 }
