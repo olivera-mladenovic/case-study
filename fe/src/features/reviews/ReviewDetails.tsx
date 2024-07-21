@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Icon, Item, Label, Segment } from 'semantic-ui-react';
-import { useSelectedReview } from '../../contexts';
+import { useSelectedReview, useUser } from '../../contexts';
 import './styles/reviewDetails.css'
 import { useMutation, useQuery } from '@apollo/client';
 import { DELETE_REVIEW, GET_REVIEWS, GET_SINGLE_REVIEW, MARK_HELPFUL } from '../../graphql';
@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 
 export const ReviewDetails: React.FC = () => {
     const selectedReviewContext = useSelectedReview();
+    const userContext = useUser();
     const { data: additionalInfo, error: additionalError } = useQuery<SingleReviewResponse>(GET_SINGLE_REVIEW, {
         variables: { id: selectedReviewContext?.selectedReview?.id },
         skip: !selectedReviewContext?.selectedReview?.id
@@ -30,12 +31,24 @@ export const ReviewDetails: React.FC = () => {
             })
         }
     })
+    const [isLiked, setLiked] = useState(false);
+const [localLikeChange, setLocalLikeChange] = useState(false);
+
+useEffect(() => {
+  if (!localLikeChange && additionalInfo?.getReview.helpfulMarks && userContext?.user?.id) {
+    const found = additionalInfo.getReview.helpfulMarks.some(
+      (m) => m.authorId === userContext.user?.id
+    );
+    setLiked(found);
+  }
+}, [additionalInfo?.getReview.helpfulMarks, userContext?.user?.id, selectedReviewContext?.selectedReview, localLikeChange]);
+
 
     const [markHelpfulReview, {error: markHelpfulReviewError}] = useMutation<markHelpfulResponse>(MARK_HELPFUL, {
         onError(e) {
             console.log(e.message);
         },
-        update(proxy, result) {
+        update(_, result) {
             if (selectedReview && result.data) {
                 const selectedReviewUpdated = {
                     ...selectedReview,
@@ -60,9 +73,11 @@ export const ReviewDetails: React.FC = () => {
     }
 
     const onLike = () => {
-        markHelpfulReview({variables: {id: selectedReview?.id}});
+        markHelpfulReview({ variables: { id: selectedReview?.id } });
+        setLiked(!isLiked);
+        setLocalLikeChange(true);
         if (error) console.log(error.message);
-    }
+      }
     
     return (
         selectedReview && <div className='reviewContainer'>
@@ -83,7 +98,7 @@ export const ReviewDetails: React.FC = () => {
         
         <div className='buttonsDetails'>
             <Button labelPosition="left" onClick={onLike}>
-                <Icon name="thumbs up outline" color="brown"/>
+                <Icon name={isLiked ? "thumbs up" : "thumbs up outline"} color="brown"/>
             </Button>
             <Label content={selectedReview.helpfulMarksCount} size='small'></Label>
             <span style={{margin: '0 10px'}}></span>

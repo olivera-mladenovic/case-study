@@ -5,9 +5,11 @@ import './styles/reviewPanel.css';
 import { CreateReview } from './ReviewCreate';
 import { MenuBar } from '../menu';
 import { ReviewDetails } from './ReviewDetails';
+import { useSelectedReview } from '../../contexts';
 
 
 export const ReviewPanel: React.FC = () => {
+    const selectedReviewContext = useSelectedReview();
     const [isCreateReviewShown, setCreateReviewShown] = React.useState(false);
     const [buttonText, setButtonText] = React.useState('Write reviews')
 
@@ -38,7 +40,7 @@ export const ReviewPanel: React.FC = () => {
             </Grid.Column>
             <Grid.Column width="8">
                 <div>
-                <ReviewDetails/>
+                {selectedReviewContext?.selectedReview && <ReviewDetails/>}
                 </div>
             </Grid.Column>
                 </Grid>
