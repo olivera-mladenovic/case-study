@@ -26,6 +26,7 @@ const Query = {
                 r.commentsCount = r.comments.length;
                 r.helpfulMarksCount = r.helpfulMarks.length;
                 r.id = r._id;
+                r.user.id = r.user._id;
                 return r;
             } catch (e) {
                 console.log(e);

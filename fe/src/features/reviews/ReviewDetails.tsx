@@ -1,13 +1,22 @@
 import React from 'react';
-import { Button, Icon, Item, Segment } from 'semantic-ui-react';
+import { Button, Item, Segment } from 'semantic-ui-react';
 import { useSelectedReview } from '../../contexts';
 import './styles/reviewDetails.css'
-import { useMutation } from '@apollo/client';
-import { DELETE_REVIEW, GET_REVIEWS } from '../../graphql';
-import { Review } from '../../models';
+import { useMutation, useQuery } from '@apollo/client';
+import { DELETE_REVIEW, GET_REVIEWS, GET_SINGLE_REVIEW } from '../../graphql';
+import { Review, SingleReviewResponse } from '../../models';
+import { Link } from 'react-router-dom';
 
 export const ReviewDetails: React.FC = () => {
     const selectedReviewContext = useSelectedReview();
+
+    const { data: additionalInfo, error: additionalError } = useQuery<SingleReviewResponse>(GET_SINGLE_REVIEW, {
+        variables: { id: selectedReviewContext?.selectedReview?.id },
+        skip: !selectedReviewContext?.selectedReview?.id
+    });
+
+    if (additionalError) console.log(additionalError.message);
+    if (additionalInfo) console.log(additionalInfo);
 
     const [deleteReview, {loading, error}] = useMutation<boolean>(DELETE_REVIEW, {
         onError(e) {
@@ -44,13 +53,13 @@ export const ReviewDetails: React.FC = () => {
                     <Item.Meta>
                         <span className='date'>Date: {new Date(selectedReview.createdAt).toDateString()}. Time: {new Date(selectedReview.createdAt).toLocaleTimeString()}</span>
                     </Item.Meta>
+                    <Item.Meta as={Link} to={`/user/${additionalInfo?.getReview.user.id}`} >
+                        <span className='date'>Written by: {additionalInfo?.getReview.user?.name}</span>
+                    </Item.Meta>
                      <Item.Description>
                         {selectedReview.text}
                     </Item.Description>
                 </Item.Content>
-        <Item.Content extra> 
-            <Icon name='user' />
-        </Item.Content>
         
         <div className='buttonsDetails'>
         <Button positive content='Cancel' onClick={onCancel} />

@@ -1,5 +1,29 @@
 import { gql } from "@apollo/client";
 
+export const LOGIN = gql`
+mutation login(
+    $email: String!  
+    $password: String!
+) {
+    login(loginInput: {email: $email, password: $password}) {
+        id email name token
+    }
+}
+`;
+
+export const REGISTER = gql`
+mutation register(
+    $email: String!
+    $name: String!
+    $password: String!
+    $confirmPassword: String!
+) {
+    register(registerInput: {email: $email, name: $name, password: $password, confirmPassword: $confirmPassword}) {
+        id email name token
+    }
+}
+`;
+
 export const CREATE_REVIEW = gql`
 mutation createReview(
     $text: String!  
@@ -10,7 +34,7 @@ mutation createReview(
         id text book author createdAt
     }
 }
-`
+`;
 
 export const GET_REVIEWS = gql`
 {
@@ -32,4 +56,18 @@ mutation deleteReview(
 ) {
     deleteReview(id: $id)
 }
-`
+`;
+export const GET_SINGLE_REVIEW = gql`
+query getReview($id: ID!){
+    getReview(id: $id) {
+        user {
+            id
+            name
+        }
+        comments {
+            authorName
+            text
+        }
+    }
+}
+`;
