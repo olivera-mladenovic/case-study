@@ -3,8 +3,8 @@ import { Button, Card, Icon, Item, Label, Segment, Form } from 'semantic-ui-reac
 import { useSelectedReview, useUser } from '../../contexts';
 import './styles/reviewDetails.css'
 import { useMutation, useQuery } from '@apollo/client';
-import { CREATE_COMMENT, DELETE_REVIEW, GET_REVIEWS, GET_SINGLE_REVIEW, MARK_HELPFUL } from '../../graphql';
-import { CreatedCommentResponse, markHelpfulResponse, Review, SingleReview, SingleReviewResponse } from '../../models';
+import { CREATE_COMMENT, DELETE_COMMENT, DELETE_REVIEW, GET_REVIEWS, GET_SINGLE_REVIEW, MARK_HELPFUL } from '../../graphql';
+import { CreatedCommentResponse, DeletedCommentResponse, markHelpfulResponse, Review, SingleReview, SingleReviewResponse } from '../../models';
 import { Link } from 'react-router-dom';
 
 export const ReviewDetails: React.FC = () => {
@@ -100,9 +100,30 @@ useEffect(() => {
         },
         variables: { reviewId: selectedReviewContext?.selectedReview?.id, text: commentText}
     })
+    const [deleteComment, {error: deleteCommentError}] = useMutation<DeletedCommentResponse>(DELETE_COMMENT, {
+        onError(e) {
+            console.log('Error Message:', e.message);
+        },
+        update(_, result) {
+            if (selectedReview && result.data) {
+                const selectedReviewUpdated = {
+                    ...selectedReview,
+                    commentsCount: selectedReview.commentsCount - 1
+                }
+                selectedReviewContext?.selectReview(selectedReviewUpdated);
+                const additionalInfoLatestUpdated = {
+                    ...additionalInfoLatest,
+                    comments: result.data.deleteComment.comments
+                };
+                setAdditionalInfoLatest(additionalInfoLatestUpdated);
+            }
+        }
+    })
     if (markHelpfulReviewError) console.log(markHelpfulReviewError.message);
 
     if (createCommentError) console.log(createCommentError.message);
+
+    if (deleteCommentError) console.log(deleteCommentError.message);
 
     if (!selectedReviewContext) return <></>
 
@@ -129,6 +150,15 @@ useEffect(() => {
 
     const onCommentsShow = () => {
         setIsCommentsShown(!isCommentsShown);
+    }
+
+    const onCommentDelete = (commentId: string) => {
+        deleteComment({
+            variables: {
+                reviewId: selectedReview?.id,
+                commentId
+            }
+        })
     }
     
     return (
@@ -174,9 +204,15 @@ useEffect(() => {
                          {additionalInfoLatest?.comments.map(comment => (
                             <Card fluid>
                                 <Card.Content>
-                                    <Card.Header>{comment.authorName}</Card.Header>
+                                    <Card.Header>
+                                        {comment.authorName}
+                                        <span>
+                                            <Button content="Delete" floated='right' onClick={() => onCommentDelete(comment.id)}/>
+                                        </span>
+                                    </Card.Header>
                                     <Card.Description>{comment.text}</Card.Description>
                                 </Card.Content>
+                                        
                             </Card>
                         ))}
                                 </>

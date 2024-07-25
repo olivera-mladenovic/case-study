@@ -65,6 +65,7 @@ query getReview($id: ID!){
             name
         }
         comments {
+            id
             authorName
             text
         }
@@ -87,6 +88,19 @@ export const CREATE_COMMENT = gql`
 mutation createComment($reviewId: ID!, $text: String!) {
     createComment(reviewId: $reviewId, text: $text) {
         comments {
+            id
+            text
+            authorName
+        }
+    }
+}
+`
+
+export const DELETE_COMMENT = gql`
+mutation deleteComment($reviewId: ID!, $commentId: ID!) {
+    deleteComment(reviewId: $reviewId, commentId: $commentId) {
+        comments {
+            id
             text
             authorName
         }

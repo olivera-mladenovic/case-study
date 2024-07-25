@@ -13,6 +13,11 @@ const Query = {
                     r.commentsCount = r.comments.length;
                     r.helpfulMarksCount = r.helpfulMarks.length;
                     r.id = r._id;
+                    r.comments = r.comments.map(c => {
+                        const comment = {...c}
+                        comment.id = c._id
+                        return comment
+                    } )
                     return r;
                 })
                 return fullReviews;
@@ -27,6 +32,11 @@ const Query = {
                 r.helpfulMarksCount = r.helpfulMarks.length;
                 r.id = r._id;
                 r.user.id = r.user._id;
+                r.comments = r.comments.map(c => {
+                    const comment = {...c}
+                    comment.id = c._id
+                    return comment
+                });
                 return r;
             } catch (e) {
                 console.log(e);

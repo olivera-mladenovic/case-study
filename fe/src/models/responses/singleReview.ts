@@ -1,5 +1,6 @@
 export interface SingleReview {
     comments: {
+        id: string;
         authorName: string;
         text: string;
     }[];
