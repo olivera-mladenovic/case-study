@@ -140,9 +140,9 @@ useEffect(() => {
                         <Item.Meta>
                             <span className='date'>Date: {new Date(selectedReview.createdAt).toDateString()}. Time: {new Date(selectedReview.createdAt).toLocaleTimeString()}</span>
                         </Item.Meta>
-                        <Item.Meta as={Link} to={`/user/${additionalInfo?.getReview?.user?.id}`} >
-                            <span className='date'>Written by: {additionalInfo?.getReview.user?.name}</span>
-                        </Item.Meta>
+                        Written by: <Item.Meta as={Link} to={`/user/${additionalInfo?.getReview?.user?.id}`} >
+                                        <span className='date'>{additionalInfo?.getReview.user?.name}</span>
+                                    </Item.Meta>
                         <Item.Description>
                             {selectedReview.text}
                         </Item.Description>
