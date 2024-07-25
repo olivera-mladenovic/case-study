@@ -82,3 +82,14 @@ mutation markHelpful($id:ID!) {
     }
 }
 `;
+
+export const CREATE_COMMENT = gql`
+mutation createComment($reviewId: ID!, $text: String!) {
+    createComment(reviewId: $reviewId, text: $text) {
+        comments {
+            text
+            authorName
+        }
+    }
+}
+`

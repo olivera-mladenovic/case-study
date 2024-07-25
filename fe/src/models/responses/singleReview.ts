@@ -3,11 +3,11 @@ export interface SingleReview {
         authorName: string;
         text: string;
     }[];
-    user: {
+    user?: {
         id: string;
         name: string;
     };
-    helpfulMarks: {
+    helpfulMarks?: {
         authorId: string;
     }[]
 }
