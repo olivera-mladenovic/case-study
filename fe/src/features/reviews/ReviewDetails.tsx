@@ -15,7 +15,8 @@ export const ReviewDetails: React.FC = () => {
 
     const { data: additionalInfo, error: additionalError } = useQuery<SingleReviewResponse>(GET_SINGLE_REVIEW, {
         variables: { id: selectedReviewContext?.selectedReview?.id },
-        skip: !selectedReviewContext?.selectedReview?.id
+        skip: !selectedReviewContext?.selectedReview?.id,
+        fetchPolicy: 'no-cache'
     });
     useEffect(() => {
         if (additionalInfo) {
@@ -155,7 +156,7 @@ useEffect(() => {
                         <Button labelPosition="left" onClick={onCommentsShow}>
                             <Icon name="comment outline" color="brown"/>
                         </Button>
-                        <Label content={selectedReview.commentsCount} size='small'></Label>
+                        <Label content={additionalInfoLatest?.comments.length} size='small'></Label>
                         <span style={{margin: '0 10%'}}></span>
                         <Button positive content='Cancel' onClick={onCancel} />
                         <Button content='Delete' onClick={onDelete} loading={loading}/>
