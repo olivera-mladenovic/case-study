@@ -4,7 +4,7 @@ import { useSelectedReview, useUser } from '../../contexts';
 import './styles/reviewDetails.css'
 import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_COMMENT, DELETE_REVIEW, GET_REVIEWS, GET_SINGLE_REVIEW, MARK_HELPFUL } from '../../graphql';
-import { markHelpfulResponse, Review, SingleReview, SingleReviewResponse } from '../../models';
+import { CreatedCommentResponse, markHelpfulResponse, Review, SingleReview, SingleReviewResponse } from '../../models';
 import { Link } from 'react-router-dom';
 
 export const ReviewDetails: React.FC = () => {
@@ -47,6 +47,8 @@ export const ReviewDetails: React.FC = () => {
     })
     const [isLiked, setLiked] = useState(false);
     const [localLikeChange, setLocalLikeChange] = useState(false);
+    const [isCommentsShown, setIsCommentsShown] = useState(false);
+
 
 useEffect(() => {
   if (!localLikeChange && additionalInfo?.getReview.helpfulMarks && userContext?.user?.id) {
@@ -74,7 +76,7 @@ useEffect(() => {
         variables: { id: selectedReviewContext?.selectedReview?.id },
     })
 
-    const [createComment, {error: createCommentError}] = useMutation<any>(CREATE_COMMENT, {
+    const [createComment, {error: createCommentError}] = useMutation<CreatedCommentResponse>(CREATE_COMMENT, {
         onError(e) {
             console.log('Comment Text:', commentText);
             console.log('Selected Review ID:', selectedReview?.id);
@@ -123,6 +125,10 @@ useEffect(() => {
         createComment({variables: {id: selectedReview?.id, text: commentText}});
         if (error) console.log(error.message);   
     }
+
+    const onCommentsShow = () => {
+        setIsCommentsShown(!isCommentsShown);
+    }
     
     return (
         selectedReview && <div className='reviewContainer'>
@@ -146,7 +152,7 @@ useEffect(() => {
                         </Button>
                         <Label content={selectedReview.helpfulMarksCount} size='small'></Label>
                         <span style={{margin: '0 10px'}}></span>
-                        <Button labelPosition="left" onClick={()=>console.log('comment here  ')}>
+                        <Button labelPosition="left" onClick={onCommentsShow}>
                             <Icon name="comment outline" color="brown"/>
                         </Button>
                         <Label content={selectedReview.commentsCount} size='small'></Label>
@@ -155,21 +161,27 @@ useEffect(() => {
                         <Button content='Delete' onClick={onDelete} loading={loading}/>
                     </div>
                         
-                        <Form onSubmit={onCommentCreate}>
+                        {
+                            isCommentsShown && (
+                                <>
+                                    <Form onSubmit={onCommentCreate}>
                             <Form.TextArea label="Text" placeholder="Text" name="text" value={commentText} onChange={onCommentChange} type="text" required />
                             <Form.Button type="submit" floated="right" content="Comment" color="orange" disabled={!isCommentButtonEnabled()} />
                          </Form>
                         
-                    {
-                        additionalInfoLatest?.comments.map(comment => (
+                    
+                         {additionalInfoLatest?.comments.map(comment => (
                             <Card fluid>
                                 <Card.Content>
                                     <Card.Header>{comment.authorName}</Card.Header>
                                     <Card.Description>{comment.text}</Card.Description>
                                 </Card.Content>
                             </Card>
-                        ))
-                    }
+                        ))}
+                                </>
+                            )
+                        }
+                    
                 </Item>
             </Segment>
     </div>
