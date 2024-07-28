@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Button, Card, Icon, Item, Label, Segment, Form } from 'semantic-ui-react';
-import { useSelectedReview, useUser } from '../../contexts';
+import { useSelectedReview } from '../../contexts';
 import './styles/reviewDetails.css';
 import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_COMMENT, DELETE_COMMENT, DELETE_REVIEW, GET_REVIEWS, GET_SINGLE_REVIEW, MARK_HELPFUL } from '../../graphql';
@@ -9,11 +9,8 @@ import { Link } from 'react-router-dom';
 
 export const ReviewDetails: React.FC = () => {
     const selectedReviewContext = useSelectedReview();
-    const userContext = useUser();
     const [commentText, setCommentText] = useState<string>('');
     const [additionalInfoLatest, setAdditionalInfoLatest] = useState<SingleReview | null>(null);
-    const [isLiked, setLiked] = useState(false);
-    const [localLikeChange, setLocalLikeChange] = useState(false);
     const [isCommentsShown, setIsCommentsShown] = useState(false);
 
     const { data: additionalInfo, error: additionalError } = useQuery<SingleReviewResponse>(GET_SINGLE_REVIEW, {
@@ -28,14 +25,6 @@ export const ReviewDetails: React.FC = () => {
         }
     }, [additionalInfo]);
 
-    useEffect(() => {
-        if (!localLikeChange && additionalInfoLatest?.helpfulMarks && userContext?.user?.id) {
-            const found = additionalInfoLatest.helpfulMarks.some(
-                (m) => m.authorId === userContext?.user?.id
-            );
-            setLiked(found);
-        }
-    }, [additionalInfoLatest, userContext]);
 
     const [markHelpfulReview, { error: markHelpfulReviewError }] = useMutation<markHelpfulResponse>(MARK_HELPFUL, {
         onError(e) {
@@ -43,25 +32,25 @@ export const ReviewDetails: React.FC = () => {
         },
         update(_, result) {
             if (selectedReviewContext?.selectedReview && result.data) {
-                const selectedReviewUpdated = {
-                    ...selectedReviewContext.selectedReview,
-                    helpfulMarksCount: result.data.markHelpful.helpfulMarksCount
-                };
-                selectedReviewContext.selectReview(selectedReviewUpdated);
+                if (selectedReviewContext?.selectedReview && result.data) {
+                    const selectedReviewUpdated = {
+                        ...selectedReviewContext.selectedReview,
+                        helpfulMarksCount: result.data.markHelpful.helpfulMarksCount
+                    };
+                    selectedReviewContext.selectReview(selectedReviewUpdated);
+                    const additionalInfoLatestUpdated = {
+                        ...additionalInfoLatest,
+                        helpfulMarksCount: result.data.markHelpful.helpfulMarksCount
+                    };
+                    setAdditionalInfoLatest(additionalInfoLatestUpdated);
+                }
             }
         },
         variables: { id: selectedReviewContext?.selectedReview?.id },
     });
 
-    const onLike = () => {
-        markHelpfulReview()
-            .then(() => {
-                setLiked((prevLiked) => !prevLiked);
-                setLocalLikeChange(true);
-            })
-            .catch((error) => {
-                console.log(error.message);
-            });
+    const onLike = async () => {
+        await markHelpfulReview()
     };
 
     const [deleteReview, { loading, error }] = useMutation<boolean>(DELETE_REVIEW, {
@@ -176,14 +165,14 @@ export const ReviewDetails: React.FC = () => {
                     </Item.Content>
                     <div className='buttonsDetails'>
                         <Button labelPosition="left" onClick={onLike}>
-                            <Icon name={isLiked ? "thumbs up" : "thumbs up outline"} color="brown" />
+                            <Icon name="thumbs up outline" color="brown" />
                         </Button>
-                        <Label content={selectedReview.helpfulMarksCount} size='small'></Label>
+                        <Label content={additionalInfoLatest?.helpfulMarksCount} size='small'></Label>
                         <span style={{ margin: '0 10px' }}></span>
                         <Button labelPosition="left" onClick={onCommentsShow}>
                             <Icon name="comment outline" color="brown" />
                         </Button>
-                        <Label content={additionalInfoLatest?.comments.length} size='small'></Label>
+                        <Label content={additionalInfoLatest?.comments?.length} size='small'></Label>
                         <span style={{ margin: '0 10%' }}></span>
                         <Button positive content='Cancel' onClick={onCancel} />
                         <Button content='Delete' onClick={onDelete} loading={loading} />
@@ -197,7 +186,7 @@ export const ReviewDetails: React.FC = () => {
                                     <Form.Button type="submit" floated="right" content="Comment" color="orange" disabled={!commentText} />
                                 </Form>
 
-                                {additionalInfoLatest?.comments.map(comment => (
+                                {additionalInfoLatest?.comments?.map(comment => (
                                     <Card fluid key={comment.id}>
                                         <Card.Content>
                                             <Card.Header>

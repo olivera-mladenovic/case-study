@@ -1,5 +1,5 @@
 export interface SingleReview {
-    comments: {
+    comments?: {
         id: string;
         authorName: string;
         text: string;
@@ -10,7 +10,8 @@ export interface SingleReview {
     };
     helpfulMarks?: {
         authorId: string;
-    }[]
+    }[];
+    helpfulMarksCount?: number;
 }
 
 export interface SingleReviewResponse {

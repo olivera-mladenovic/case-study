@@ -72,6 +72,7 @@ query getReview($id: ID!){
         helpfulMarks {
             authorId
         }
+        helpfulMarksCount
     }
 }
 `;
