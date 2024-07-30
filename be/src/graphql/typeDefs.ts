@@ -15,7 +15,7 @@ export const typeDefs = gql `
     type Mutation {
         register(registerInput: RegisterInput): RegistratedUser!
         login(loginInput: LoginInput): RegistratedUser!
-        createReview(createReviewInput: CreateRevewInput): Review!
+        createReview(createReviewInput: CreateReviewInput): Review!
         deleteReview(id: ID!): Boolean!
         createComment(reviewId: ID!, text: String!): Review!
         deleteComment(reviewId: ID!, commentId: ID!): Review!
@@ -43,7 +43,7 @@ export const typeDefs = gql `
         authorName: String!
         createdAt: Float!
     }
-    input CreateRevewInput {
+    input CreateReviewInput {
         text: String!
         book: String!
         author: String!
