@@ -3,7 +3,7 @@ import { CreatedReviewResponse, CreateReviewInput } from "../../models";
 import { Form } from "semantic-ui-react";
 import './styles/reviewCreate.css'
 import { useMutation } from "@apollo/client";
-import { CREATE_REVIEW, GET_REVIEWS } from "../../graphql";
+import { CREATE_REVIEW, GET_ALL_REVIEWS } from "../../graphql";
 
 export const CreateReview: React.FC = () => {
     const [values, setValues] = useState<CreateReviewInput>({
@@ -26,10 +26,12 @@ export const CreateReview: React.FC = () => {
             newestReview.helpfulMarksCount = 0;
             newestReview.commentsCount = 0;
             proxy.updateQuery({
-                query: GET_REVIEWS
+                query: GET_ALL_REVIEWS
             }, (data) => {
                 return {
-                    getReviews: [newestReview, ...(data.getReviews)]
+                    getReviews: {
+                        reviews: [newestReview, ...(data.getReviews.reviews)]
+                    }
                 }
             });
             setValues({

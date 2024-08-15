@@ -9,7 +9,7 @@ export const typeDefs = gql `
     }
     type Query {
         getUsers: [User!]
-        getReviews: [Review]
+        getReviews(reviewFilter: ReviewFilter, pagination: PaginationFilter): PagedReviews
         getReview(id: ID!): Review!
     }
     type Mutation {
@@ -32,6 +32,17 @@ export const typeDefs = gql `
         createdAt: Float!
         commentsCount: Int!
         helpfulMarksCount: Int!
+    }
+    input ReviewFilter {
+        authorId: ID
+    }
+    input PaginationFilter {
+        limit: Int
+        offset: Int
+    }
+    type PagedReviews {
+        reviews: [Review]
+        total: Int
     }
     type HelpfulMark {
         authorId: ID!

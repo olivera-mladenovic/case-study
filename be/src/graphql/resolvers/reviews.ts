@@ -6,9 +6,21 @@ import { AuthenticationError, UserInputError } from 'apollo-server';
 const Query = {
     
     Query: {
-        getReviews: async () => {
+        getReviews: async (_, { reviewFilter, pagination }) => {
             try {
-                const reviews = await Review.find().populate('user').lean().exec();
+                const query: any = {};
+                if (reviewFilter?.authorId) {
+                    query.user = reviewFilter.authorId;
+                }
+                const offset = pagination?.offset || 0;
+                const limit = pagination?.limit || 20;
+                const totalCount = await Review.countDocuments(query);
+                const reviews = await Review.find(query)
+                    .populate('user')
+                    .lean()
+                    .skip(offset)
+                    .limit(limit)
+                    .exec();
                 const fullReviews = reviews.map((r: any) => {
                     r.commentsCount = r.comments.length;
                     r.helpfulMarksCount = r.helpfulMarks.length;
@@ -17,10 +29,14 @@ const Query = {
                         const comment = {...c}
                         comment.id = c._id
                         return comment
-                    } )
+                    })
+                    r.user.id = r.user._id;
                     return r;
                 })
-                return fullReviews;
+                return {
+                    reviews: fullReviews,
+                    total: totalCount
+                };
             } catch (e) {
                 console.log(e);
             }
@@ -30,13 +46,13 @@ const Query = {
                 const r:any = await Review.findById(id).populate('user').lean().exec();
                 r.commentsCount = r.comments.length;
                 r.helpfulMarksCount = r.helpfulMarks.length;
-                r.id = r._id;
-                r.user.id = r.user._id;
+                r.id = r._id;       
                 r.comments = r.comments.map(c => {
                     const comment = {...c}
                     comment.id = c._id
                     return comment
                 });
+                r.user.id = r.user._id;
                 return r;
             } catch (e) {
                 console.log(e);

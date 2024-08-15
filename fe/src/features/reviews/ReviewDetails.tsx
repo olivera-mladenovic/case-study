@@ -3,7 +3,7 @@ import { Button, Card, Icon, Item, Label, Segment, Form } from 'semantic-ui-reac
 import { useSelectedReview } from '../../contexts';
 import './styles/reviewDetails.css';
 import { useMutation, useQuery } from '@apollo/client';
-import { CREATE_COMMENT, DELETE_COMMENT, DELETE_REVIEW, GET_REVIEWS, GET_SINGLE_REVIEW, MARK_HELPFUL } from '../../graphql';
+import { CREATE_COMMENT, DELETE_COMMENT, DELETE_REVIEW, GET_ALL_REVIEWS, GET_SINGLE_REVIEW, MARK_HELPFUL } from '../../graphql';
 import { CreatedCommentResponse, DeletedCommentResponse, markHelpfulResponse, Review, SingleReview, SingleReviewResponse } from '../../models';
 import { Link } from 'react-router-dom';
 
@@ -58,8 +58,8 @@ export const ReviewDetails: React.FC = () => {
             console.log(e);
         },
         update(proxy) {
-            proxy.updateQuery({ query: GET_REVIEWS }, (data) => {
-                const filteredReviews = data.getReviews.filter((r: Review) => r.id !== selectedReviewContext?.selectedReview?.id);
+            proxy.updateQuery({ query: GET_ALL_REVIEWS }, (data) => {
+                const filteredReviews = data.getReviews.reviews.filter((r: Review) => r.id !== selectedReviewContext?.selectedReview?.id);
                 return {
                     getReviews: filteredReviews
                 };

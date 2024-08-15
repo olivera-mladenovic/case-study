@@ -36,16 +36,18 @@ mutation createReview(
 }
 `;
 
-export const GET_REVIEWS = gql`
+export const GET_ALL_REVIEWS = gql`
 {
     getReviews {
-        id
-        createdAt
-        text
-        book
-        author
-        commentsCount
-        helpfulMarksCount
+        reviews {
+            id
+            createdAt
+            text
+            book
+            author
+            commentsCount
+            helpfulMarksCount
+        }
     }
 }
 `;
