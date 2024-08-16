@@ -1,9 +1,11 @@
 import React from 'react';
 import 'semantic-ui-css/semantic.min.css'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { HomeScreen, LoginScreen, RegisterScreen } from './features/account';
+import { HomeScreen, LoginScreen, RegisterScreen, UserScreen } from './features/account';
 import { ReviewPanel} from './features/reviews';
 import { SelectedReviewProvider, UserProvider } from './contexts';
+
+
 
 function App() {
   return (
@@ -16,6 +18,7 @@ function App() {
             <Route path='/register' Component={RegisterScreen}/>
             <Route path='/login' Component={LoginScreen}/>
             <Route path='/panel' Component={ReviewPanel}/>
+            <Route path='/user/:userId' Component={UserScreen}/>
           </Routes>
         </Router>
         </SelectedReviewProvider>

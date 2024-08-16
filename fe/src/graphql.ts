@@ -52,6 +52,21 @@ export const GET_ALL_REVIEWS = gql`
 }
 `;
 
+export const GET_FILTERED_REVIEWS = gql`
+query getReviews($authorId: ID){
+    getReviews(reviewFilter: {authorId:$authorId}, pagination: {limit: 3}) {
+        reviews {
+            book
+            text
+            author
+            user {
+                name
+            }
+        }
+    }
+}
+`;
+
 export const DELETE_REVIEW = gql`
 mutation deleteReview(
     $id: ID!  
