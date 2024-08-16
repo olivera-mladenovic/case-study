@@ -11,6 +11,7 @@ export const typeDefs = gql `
         getUsers: [User!]
         getReviews(reviewFilter: ReviewFilter, pagination: PaginationFilter): PagedReviews
         getReview(id: ID!): Review!
+        getCommentsByAuthor(authorId: ID!, pagination: PaginationFilter): PagedComments
     }
     type Mutation {
         register(registerInput: RegisterInput): RegistratedUser!
@@ -44,6 +45,10 @@ export const typeDefs = gql `
         reviews: [Review]
         total: Int
     }
+    type PagedComments {
+        comments: [CommentWithReviewDetails]
+        total: Int
+    }
     type HelpfulMark {
         authorId: ID!
         authorName: String!
@@ -53,6 +58,14 @@ export const typeDefs = gql `
         text: String!
         authorName: String!
         createdAt: Float!
+    }
+    type CommentWithReviewDetails {
+        id: ID!
+        text: String!
+        authorName: String!
+        createdAt: Float!
+        author: String!
+        book: String!
     }
     input CreateReviewInput {
         text: String!

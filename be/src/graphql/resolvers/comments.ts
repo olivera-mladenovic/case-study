@@ -3,6 +3,62 @@ import Review from '../../models/Review.js';
 import auth from '../authentication.js';
 
 const Query = {
+    Query: {
+        getCommentsByAuthor: async (_, {authorId, pagination}, context) => {
+            try {
+                const query = {
+                    user: authorId
+                };
+                const offset = pagination?.offset || 0;
+                const limit = pagination?.limit || 20;
+                const totalCount = await Review.find({
+                    comments: {
+                        $elemMatch: {
+                            authorId: authorId
+                        }
+                    }
+                }).exec();
+                
+                const commentsByAuthor = await Review.aggregate([
+                    {
+                      $unwind: "$comments"
+                    },
+                    {
+                      $match: {
+                        "comments.authorId": authorId 
+                      }
+                    },
+                    {
+                      $sort: {
+                        "comments.createdAt": -1 
+                      }
+                    },
+                    {
+                      $project: {
+                        _id: 0,
+                        text: "$comments.text",
+                        authorName: "$comments.authorName",
+                        authorId: "$comments.authorId",
+                        createdAt: "$comments.createdAt",
+                        book: 1,
+                        author:1
+                      }
+                    },
+                    {
+                        $limit: limit
+                    }
+                  ]).exec();
+
+                  return {
+                    comments: commentsByAuthor,
+                    total: totalCount.length
+                  }
+
+            } catch(e) {
+                console.log(e)
+            }
+        }
+    },
     Mutation: {
         createComment: async (_, { reviewId, text }, context) => {
             const user = auth(context) as any;

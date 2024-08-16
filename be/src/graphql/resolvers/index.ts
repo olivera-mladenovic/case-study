@@ -5,7 +5,8 @@ import commentResolvers from './comments.js';
 const Query = {
     Query: {
         ...userResolvers.Query,
-        ...reviewResolvers.Query
+        ...reviewResolvers.Query,
+        ...commentResolvers.Query
     },
     Mutation: {
         ...userResolvers.Mutation,

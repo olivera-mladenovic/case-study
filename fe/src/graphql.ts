@@ -112,7 +112,7 @@ mutation createComment($reviewId: ID!, $text: String!) {
         }
     }
 }
-`
+`;
 
 export const DELETE_COMMENT = gql`
 mutation deleteComment($reviewId: ID!, $commentId: ID!) {
@@ -124,4 +124,18 @@ mutation deleteComment($reviewId: ID!, $commentId: ID!) {
         }
     }
 }
-`
+`;
+
+export const GET_USERS_COMMENTS = gql`
+query getComments($authorId: ID!) {
+    getCommentsByAuthor(authorId: $authorId, pagination: {limit: 3}) {
+        comments {
+            authorName
+            text
+            author
+            book
+        }
+        total
+    }
+}
+`;
