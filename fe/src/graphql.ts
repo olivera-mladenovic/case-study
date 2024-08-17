@@ -62,6 +62,8 @@ query getReviews($authorId: ID){
             createdAt
             user {
                 name
+                photo
+                biography
             }
         }
         total

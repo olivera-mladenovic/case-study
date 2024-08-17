@@ -4,3 +4,4 @@ export * from './singleReview';
 export * from './markHelpful';
 export * from './createdComment';
 export * from './deleteComment';
+export * from './latestComments';

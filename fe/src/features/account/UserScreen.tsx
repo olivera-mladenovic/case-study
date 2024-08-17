@@ -5,7 +5,7 @@ import { GET_FILTERED_REVIEWS, GET_USERS_COMMENTS } from "../../graphql";
 import { MenuBar } from "../menu";
 import './styles/UserScreen.css';
 import { useQuery } from "@apollo/client";
-import { Review } from "../../models";
+import { LatestCommentsResponse, Review } from "../../models";
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
 
@@ -23,7 +23,7 @@ export const  UserScreen: React.FC = () => {
         console.log(reviewsError)
     }
 
-    const {loading: commentsLoading, data: commentsData, error: commentsError} = useQuery(GET_USERS_COMMENTS, {
+    const {loading: commentsLoading, data: commentsData, error: commentsError} = useQuery<LatestCommentsResponse>(GET_USERS_COMMENTS, {
         variables: {
             authorId: userId
         },
@@ -42,10 +42,10 @@ export const  UserScreen: React.FC = () => {
             <div className="container">
             <Grid>
             <Card
-    image='/profile/man.jpg'
+    image={`/profile/${reviewsData?.getReviews?.reviews[0]?.user?.photo ?? 'stock'}.jpg`}
     header={reviewsData?.getReviews?.reviews[0]?.user?.name}
     meta='Reviewer'
-    description='Elliot is a sound engineer living in Nashville who enjoys playing guitar and hanging with his cat.'
+    description={reviewsData?.getReviews?.reviews[0]?.user?.biography}
     style={{"marginRight": '20px'}}
   />
                 
@@ -67,8 +67,8 @@ export const  UserScreen: React.FC = () => {
                     <Header size="large">Latest comments:</Header>
                     <Card.Group className={commentsLoading ? 'loading' : ''}>
                         {
-                        commentsData?.getCommentsByAuthor?.comments?.map((r: any) => (
-                            <Card key={r.id}>
+                        commentsData?.getCommentsByAuthor?.comments?.map((r) => (
+                            <Card>
                                 <Card.Content>
                                     <Card.Header>{`${r.book}, ${r.author}`}</Card.Header>
                                     <Card.Meta>{moment().to(r.createdAt)}</Card.Meta>
