@@ -17,7 +17,7 @@ export const MenuBar =() => {
     return (
         <Menu inverted fixed='top'>
             <Menu.Item header>
-                <img src='/vite.svg'/>
+                <img src='/book.png'/>
             </Menu.Item>
             <Menu.Item name='Book Reviews'/>               
                 <Menu.Menu position='right'>

@@ -12,16 +12,16 @@ export const HomeScreen: React.FC = () =>  {
           <Grid.Row verticalAlign='middle' as='a'>
             <Grid.Column>
               <Header icon>
-              <Image src='/vite.svg' wrapped ui={false} />
+              <Image src='/signin.png' wrapped />
               </Header>
-              <Button content='Login' onClick={()=> navigate('/login')}></Button>
+              <Button content='Login' onClick={()=> navigate('/login')} color="orange"></Button>
             </Grid.Column>
     
             <Grid.Column>
               <Header icon>
-              <Image src='/vite.svg' wrapped ui={false} />
+              <Image src='/signup.png' wrapped  />
               </Header>
-              <Button content='Register' onClick={()=> navigate('/register')}></Button>
+              <Button content='Register' onClick={()=> navigate('/register')} color="purple"></Button>
             </Grid.Column>
           </Grid.Row>
         </Grid>
