@@ -59,10 +59,12 @@ query getReviews($authorId: ID){
             book
             text
             author
+            createdAt
             user {
                 name
             }
         }
+        total
     }
 }
 `;
@@ -134,6 +136,7 @@ query getComments($authorId: ID!) {
             text
             author
             book
+            createdAt
         }
         total
     }

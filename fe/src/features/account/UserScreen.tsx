@@ -1,12 +1,13 @@
 
 import React from "react";
-import { Card, Header, Segment } from "semantic-ui-react";
+import { Card, Grid, Header, Segment } from "semantic-ui-react";
 import { GET_FILTERED_REVIEWS, GET_USERS_COMMENTS } from "../../graphql";
 import { MenuBar } from "../menu";
 import './styles/UserScreen.css';
 import { useQuery } from "@apollo/client";
 import { Review } from "../../models";
 import { useParams } from 'react-router-dom';
+import moment from 'moment';
 
 export const  UserScreen: React.FC = () => {
     const { userId } = useParams();
@@ -37,34 +38,50 @@ export const  UserScreen: React.FC = () => {
     return (
         <div>
             <MenuBar/>
+            
             <div className="container">
-                <Header size="huge">User: {reviewsData?.getReviews?.reviews[0]?.user?.name}</Header>
-                <Segment className={reviewsLoading ? 'loading' : ''}>
-                    <Header size="large">Latest reviews</Header>
+            <Grid>
+            <Card
+    image='/profile/man.jpg'
+    header={reviewsData?.getReviews?.reviews[0]?.user?.name}
+    meta='Reviewer'
+    description='Elliot is a sound engineer living in Nashville who enjoys playing guitar and hanging with his cat.'
+    style={{"marginRight": '20px'}}
+  />
+                
+                <Segment className={reviewsLoading ? 'loading' : 'removeMargin'}>
+                    <Header size="large">Latest reviews:</Header>
                     <Card.Group>
                         {
                         reviewsData?.getReviews?.reviews?.map((r:Review) => (
                             <Card key={r.id}>
                                 <Card.Content>
-                                    <Card.Header>{r.book}</Card.Header>
+                                    <Card.Header>{`${r.book}, ${r.author}`}</Card.Header>
+                                    <Card.Meta>{moment().to(r.createdAt)}</Card.Meta>
+                                    <Card.Content>{r.text}</Card.Content>
                                 </Card.Content>
                             </Card>
                         ))}
                     </Card.Group>
-                </Segment>
-                <Segment className={commentsLoading ? 'loading' : ''}>
-                    <Header size="large">Latest comments</Header>
-                    <Card.Group>
+
+                    <Header size="large">Latest comments:</Header>
+                    <Card.Group className={commentsLoading ? 'loading' : ''}>
                         {
                         commentsData?.getCommentsByAuthor?.comments?.map((r: any) => (
                             <Card key={r.id}>
                                 <Card.Content>
-                                    <Card.Header>{r.text}</Card.Header>
+                                    <Card.Header>{`${r.book}, ${r.author}`}</Card.Header>
+                                    <Card.Meta>{moment().to(r.createdAt)}</Card.Meta>
+                                    <Card.Content>{r.text}</Card.Content>
                                 </Card.Content>
                             </Card>
                         ))}
                     </Card.Group>
+                    <Header size="large">Total Reviews: {reviewsData?.getReviews?.total}</Header>
+                    <Header size="large">Total Comments: {commentsData?.getCommentsByAuthor?.total}</Header>
                 </Segment>
+                
+            </Grid>
         </div>
         </div>
     )
