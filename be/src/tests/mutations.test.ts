@@ -68,6 +68,12 @@ const DELETE_REVIEW_MUTATION = `
   }
 `;
 
+const DELETE_ACCOUNT_MUTATION =`
+  mutation deleteAccount {
+    deleteAccount
+  }
+`
+
 const CREATE_COMMENT_MUTATION = `
     mutation createComment($reviewId: ID!, $text: String!) {
         createComment(reviewId: $reviewId, text: $text) {
@@ -210,4 +216,16 @@ test('Delete Review', async () => {
     });
     expect(response.body.errors).toBeUndefined();
     expect(response.body.data.deleteReview).toBe(true);
+});
+
+test('Delete Account', async () => {
+    const response = await request(url)
+    .post('/')
+    .set('Authorization', `Bearer ${registratedUser.token}`)
+    .send({
+        query: DELETE_ACCOUNT_MUTATION,
+    });
+
+    expect(response.body.errors).toBeUndefined();
+    expect(response.body.data.deleteAccount).toBe(true);
 });

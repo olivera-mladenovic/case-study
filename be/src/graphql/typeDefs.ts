@@ -23,6 +23,7 @@ export const typeDefs = gql `
         createComment(reviewId: ID!, text: String!): Review!
         deleteComment(reviewId: ID!, commentId: ID!): Review!
         markHelpful(id: ID!): Review!
+        deleteAccount: Boolean!
     }
     type Review {
         id: ID!

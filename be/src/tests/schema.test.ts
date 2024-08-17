@@ -7,6 +7,8 @@ const expectedUserSchema = gql`
     name: String!
     password: String!
     email: String!
+    photo: String
+    biography: String
   }
 `;
 

@@ -16,13 +16,15 @@ const GET_USERS = `
 const GET_REVIEWS = `
 query getReviews {
   getReviews {
-    id
-    createdAt
-    text
-    book
-    author
-    commentsCount
-    helpfulMarksCount
+    reviews {
+      id
+      createdAt
+      text
+      book
+      author
+      commentsCount
+      helpfulMarksCount
+    }
   }
 }
 `;
@@ -69,8 +71,8 @@ test('Fetch reviews', async () => {
     });
   expect(response.body.errors).toBeUndefined();
   expect(response.body.data.getReviews).toBeDefined();
-  expect(response.body.data.getReviews.length).toBeGreaterThan(0);
-  reviewId = response.body.data.getReviews[0].id;
+  expect(response.body.data.getReviews.reviews.length).toBeGreaterThan(0);
+  reviewId = response.body.data.getReviews.reviews[0].id;
 });
 
 test('Fetch single review', async () => {

@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import User from '../../models/User.js';
 import { UserInputError } from 'apollo-server';
 import { validateRegisterInput } from './validators.js';
+import auth from '../authentication.js';
 
 const Query = {
     Query: {
@@ -69,7 +70,19 @@ const Query = {
                 name: user.name,
                 token,
             }
+        },
+
+        deleteAccount: async (_, args, context) => {
+            try {
+                const user = auth(context) as any;
+                await User.findByIdAndDelete(user.id);
+                return true;
+            } catch(e) {
+                console.log(e);
+                return false;
+            }
         }
+
     }
 }
 
