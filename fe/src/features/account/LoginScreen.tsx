@@ -37,7 +37,7 @@ export const LoginScreen: React.FC = () => {
     return (
         <div className="form">
             <Form onSubmit={onSubmit} className={loading ? 'loading' : ''}>
-                <h1>Register</h1>
+                <h1>Login</h1>
                 <Form.Input label="Email" placeholder="Email" name="email" value={values.email} onChange={onChange} type="email" />
                 <Form.Input label="Password" placeholder="Password" name="password" value={values.password} onChange={onChange} type="password" />
                 <Button type="submit" color="orange" disabled={!isButtonEnabled()} style={{width: '100%', marginTop: '15px'}}>Login</Button>

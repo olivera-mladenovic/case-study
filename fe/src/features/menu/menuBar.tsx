@@ -1,16 +1,18 @@
 import React from 'react';
 import { Button, Menu } from 'semantic-ui-react';
 import './styles/menuBar.css'
-import { useUser } from '../../contexts';
+import { useSelectedReview, useUser } from '../../contexts';
 import { useNavigate } from 'react-router-dom';
 
 export const MenuBar =() => {
 
     const contextData = useUser();
+    const reviewContextData = useSelectedReview();
     const navigate = useNavigate();
 
     const onLogout = () => {
         contextData?.logoutUser();
+        reviewContextData?.cancelSelectedReview();
         navigate('/')
     }
     

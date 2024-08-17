@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Button, Divider, Grid, Header, Image, Segment } from "semantic-ui-react";
 
 export const HomeScreen: React.FC = () =>  {
-    const navigate =useNavigate();
+    const navigate = useNavigate();
+    
     return (
         <Segment placeholder>
         <Grid columns={2} stackable textAlign='center'>
