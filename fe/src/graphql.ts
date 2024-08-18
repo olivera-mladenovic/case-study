@@ -17,8 +17,9 @@ mutation register(
     $name: String!
     $password: String!
     $confirmPassword: String!
+    $biography: String!
 ) {
-    register(registerInput: {email: $email, name: $name, password: $password, confirmPassword: $confirmPassword}) {
+    register(registerInput: {email: $email, name: $name, password: $password, confirmPassword: $confirmPassword, biography: $biography}) {
         id email name token
     }
 }

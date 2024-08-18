@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Menu } from 'semantic-ui-react';
 import './styles/menuBar.css'
 import { useSelectedReview, useUser } from '../../contexts';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const MenuBar =() => {
 
@@ -18,7 +18,7 @@ export const MenuBar =() => {
     
     return (
         <Menu inverted fixed='top'>
-            <Menu.Item header>
+            <Menu.Item header as={Link} to='/panel'>
                 <img src='/book.png'/>
             </Menu.Item>
             <Menu.Item name='Book Reviews'/>               

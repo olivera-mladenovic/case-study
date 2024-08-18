@@ -3,4 +3,5 @@ export interface RegisterInput {
     password: string
     confirmPassword: string
     email: string
+    biography: string
 }

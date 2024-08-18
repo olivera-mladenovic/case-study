@@ -80,6 +80,7 @@ export const typeDefs = gql `
         password: String!
         confirmPassword: String!
         email: String!
+        biography: String!
     }
     input LoginInput {
         email: String!

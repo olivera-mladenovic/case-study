@@ -2,8 +2,8 @@ import { UserInputError } from 'apollo-server';
 import { LoginInput, RegisterInput } from './types';
 
 export const validateRegisterInput = (registerInput: RegisterInput) => {
-    const {email, password, confirmPassword, name} = registerInput;
-    if (!email || password !==confirmPassword || !name) {
+    const {email, password, confirmPassword, name, biography} = registerInput;
+    if (!email || password !==confirmPassword || !name || !biography) {
         throw new UserInputError('Bad input fields.');
     }
 }

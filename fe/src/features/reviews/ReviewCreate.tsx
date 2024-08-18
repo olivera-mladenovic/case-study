@@ -55,7 +55,7 @@ export const CreateReview: React.FC = () => {
     return (
         <div className="form">
             <Form onSubmit={onSubmit} className={loading ? 'loading' : ''}>
-                <Form.TextArea label="Text" placeholder="Text" name="text" value={values.text} onChange={onChange} type="text" required />
+                <Form.TextArea label="Text" placeholder="Enter your review..." name="text" value={values.text} onChange={onChange} type="text" required />
                 <Form.Input label="Book" placeholder="Book" name="book" value={values.book} onChange={onChange} type="text" required />
                 <Form.Input label="Author" placeholder="Author" name="author" value={values.author} onChange={onChange} type="text" required />
                 <Form.Button type="submit" floated="right" content="Create" color="orange" disabled={!isButtonEnabled()} />

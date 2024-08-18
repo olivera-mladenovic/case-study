@@ -20,17 +20,18 @@ const Query = {
     },
     Mutation: {
         register: async (_, args: { registerInput: RegisterInput }) =>{
-            const { email, name, password } = args.registerInput;
+            const { email, name, password, biography } = args.registerInput;
             validateRegisterInput(args.registerInput)
             const existingUser = await User.findOne({ email });
             if (existingUser) {
-                throw new UserInputError(`User with emal: ${email} is already registered.`)
+                throw new UserInputError(`User with email: ${email} is already registered.`)
             }
             const hashedPassword = await bcrypt.hash(password, 12);
             const user = new User({
                 email,
                 password: hashedPassword,
-                name
+                name,
+                biography
             });
             await user.save();
 
