@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Button, Card, Icon, Item, Label, Segment, Form } from 'semantic-ui-react';
-import { useSelectedReview } from '../../contexts';
+import { useSelectedReview, useUser } from '../../contexts';
 import './styles/reviewDetails.css';
 import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_COMMENT, DELETE_COMMENT, DELETE_REVIEW, GET_ALL_REVIEWS, GET_SINGLE_REVIEW, MARK_HELPFUL } from '../../graphql';
@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 
 export const ReviewDetails: React.FC = () => {
     const selectedReviewContext = useSelectedReview();
+    const userContext = useUser();
     const [commentText, setCommentText] = useState<string>('');
     const [additionalInfoLatest, setAdditionalInfoLatest] = useState<SingleReview | null>(null);
     const [isCommentsShown, setIsCommentsShown] = useState(false);
@@ -175,7 +176,7 @@ export const ReviewDetails: React.FC = () => {
                         <Label content={additionalInfoLatest?.comments?.length} size='small'></Label>
                         <span style={{ margin: '0 10%' }}></span>
                         <Button positive content='Cancel' onClick={onCancel} />
-                        <Button content='Delete' onClick={onDelete} loading={loading} />
+                        {userContext?.amIAuthor(additionalInfoLatest?.user?.id) && <Button content='Delete' onClick={onDelete} loading={loading} />}
                     </div>
 
                     {

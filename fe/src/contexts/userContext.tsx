@@ -16,8 +16,10 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
         window.localStorage.removeItem('token');
     };
 
+    const amIAuthor = (authorId: string | undefined) => authorId === user?.id;
+
     return (
-        <UserContext.Provider value={{ user, loginUser, logoutUser }}>
+        <UserContext.Provider value={{ user, loginUser, logoutUser, amIAuthor }}>
             {children}
         </UserContext.Provider>
     )
