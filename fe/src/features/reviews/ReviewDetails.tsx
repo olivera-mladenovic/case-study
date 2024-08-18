@@ -193,7 +193,7 @@ export const ReviewDetails: React.FC = () => {
                                             <Card.Header>
                                                 {comment.authorName}
                                                 <span>
-                                                    <Button content="Delete" floated='right' onClick={() => onCommentDelete(comment.id)} />
+                                                    {userContext?.amIAuthor(comment.authorId) && <Button content="Delete" floated='right' onClick={() => onCommentDelete(comment.id)} />}
                                                 </span>
                                             </Card.Header>
                                             <Card.Description>{comment.text}</Card.Description>

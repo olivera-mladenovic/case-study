@@ -60,6 +60,7 @@ export const typeDefs = gql `
         id: ID!
         text: String!
         authorName: String!
+        authorId: ID!
         createdAt: Float!
     }
     type CommentWithReviewDetails {

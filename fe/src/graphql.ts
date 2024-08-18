@@ -89,6 +89,7 @@ query getReview($id: ID!){
         comments {
             id
             authorName
+            authorId
             text
         }
         helpfulMarks {
@@ -114,6 +115,7 @@ mutation createComment($reviewId: ID!, $text: String!) {
             id
             text
             authorName
+            authorId
         }
     }
 }
@@ -126,6 +128,7 @@ mutation deleteComment($reviewId: ID!, $commentId: ID!) {
             id
             text
             authorName
+            authorId
         }
     }
 }

@@ -6,10 +6,6 @@ const Query = {
     Query: {
         getCommentsByAuthor: async (_, {authorId, pagination}, context) => {
             try {
-                const query = {
-                    user: authorId
-                };
-                const offset = pagination?.offset || 0;
                 const limit = pagination?.limit || 20;
                 const totalCount = await Review.find({
                     comments: {

@@ -2,6 +2,7 @@ export interface SingleReview {
     comments?: {
         id: string;
         authorName: string;
+        authorId: string;
         text: string;
     }[];
     user?: {

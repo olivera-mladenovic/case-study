@@ -3,6 +3,7 @@ export interface CreatedComment {
         id: string;
         text: string;
         authorName: string;
+        authorId: string;
     }[]
 }
 
