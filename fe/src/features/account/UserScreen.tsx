@@ -12,6 +12,7 @@ import moment from 'moment';
 export const  UserScreen: React.FC = () => {
     const { userId } = useParams();
     const { loading: reviewsLoading, data: reviewsData, error: reviewsError } = useQuery(GET_FILTERED_REVIEWS, {
+        fetchPolicy: 'no-cache',
         variables: {
             authorId: userId
         },
@@ -24,6 +25,7 @@ export const  UserScreen: React.FC = () => {
     }
 
     const {loading: commentsLoading, data: commentsData, error: commentsError} = useQuery<LatestCommentsResponse>(GET_USERS_COMMENTS, {
+        fetchPolicy: 'no-cache',
         variables: {
             authorId: userId
         },
@@ -38,7 +40,6 @@ export const  UserScreen: React.FC = () => {
     return (
         <div>
             <MenuBar/>
-            
             <div className="container">
             <Grid>
             <Card
